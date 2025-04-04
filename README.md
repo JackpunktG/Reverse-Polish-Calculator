@@ -1,2 +1,3 @@
 # Reverse Polish Calculator
-Wanting to slowly built my own, with all the new tech I've been learning in C :)
+__________________
+v1 - just sketched out the basic function.
