@@ -68,7 +68,7 @@ int main()
 				break;
 		}
 		sum = rpc(digit, operator, count);
-		printf("%d?", sum);
+		printf("%d", sum);
 		
 
 }
