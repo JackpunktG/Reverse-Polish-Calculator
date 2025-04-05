@@ -30,6 +30,7 @@ int rpc(int digit[], char operator[], int count)
 				break;
 			case '/':
 				sum = digit1 / digit2;
+				printf("Whole time divisible... soz fraction feature coming soon\n");
 				break;
 			default:
 				printf("Error by switch");
@@ -50,6 +51,11 @@ int power(int base, int n)
 	return p;
 }
 
+void clear_input_buffer() {						//clearing buffered inputs
+	int ch;
+	while ((ch = getchar()) != '\n' && ch != EOF);
+}
+
 int main()
 {
 	int c = 0;
@@ -63,36 +69,52 @@ int main()
 	int hold_value;
 
 
-	printf("-- The version1.1 of Jack's RPC -- \nHandling only one calculation at a time, but NOW with multi-digit numbers!!\nInput the numbers and operator with a space in between... danke des :)\n\n");
-	while ((c = getchar()) != EOF) {
-		if (c >= '0' <= '9') {
-			if (digit_count > 0) {
-				if (c == ' ' || c == '\t') {
-					digit_count = 0;
-					digit_index++;
+	printf("-- The version1.1 of Jack's RPC -- \nHandling only one calculation at a time, but NOW with multi-digit numbers!!\nInput with a space in between then enter after the operator... danke des :)\n\n");
+	while (1) {
+		while ((c = getchar()) != EOF) {
+			if (c >= '0' <= '9') {
+				if (digit_count > 0) {
+					if (c == ' ' || c == '\t') {
+						digit_count = 0;
+						digit_index++;
+					}
+					else {
+						hold_value = digit[digit_index];
+						hold_value *= 10;
+						digit[digit_index] = (c - '0') + hold_value;
+						digit_count++;
+					}
 				}
 				else {
-					hold_value = digit[digit_index];
-					hold_value *= 10;
-					digit[digit_index] = (c - '0') + hold_value;
+					digit[digit_index] = c - '0';
 					digit_count++;
+
 				}
 			}
-			else {
-				digit[digit_index] = c - '0';
-				digit_count++;
-
+			if (c == '+' || c == '-' || c == '/' || c == '*') {
+				operator[operator_index++] = c;
+				digit_count = 0;
+				digit_index++;
 			}
+			if (c == '\n') {
+				break;
+			}
+			
+		}	
+		sum = rpc(digit, operator, digit_count);
+		printf("%d", sum);
+		
+		printf(" -- BOOM!\n\nWasn't that funnn!!\n1 to exit -- Any (other) key for another go\n");
+		scanf_s("%d", &options);
+		if (options == 1) {
+			printf("\nTill next time +_+\n");
+			return;
 		}
-		if (c == '+' || c == '-' || c == '/' || c == '*') {
-			operator[operator_index++] = c;
-			digit_count = 0;
-			digit_index++;
-		}
-		if (c == '\n') {
-			break;
-		}
+		digit_index = 0;
+		operator_index = 0;
+		digit_count = 0;
+		clear_input_buffer();
+		printf("\n");
 	}
-	sum = rpc(digit, operator, digit_count);
-	printf("%d", sum);
+	return;
 }
