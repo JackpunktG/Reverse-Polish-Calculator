@@ -18,9 +18,6 @@ int rpc(int digit[], char operator[], int count)
 		digit1 = digit[0];
 		digit2 = digit[1];
 		operator_sign = operator[0];
-		printf("%d - digit1\n", digit1);
-		printf("%d - digit2\n", digit2);
-		printf("%c - operator\n", operator_sign);
 		switch (operator_sign) {
 			case '+':
 				sum = digit1 + digit2;
@@ -53,11 +50,6 @@ int power(int base, int n)
 	return p;
 }
 
-void clear_input_buffer() {						//clearing buffered inputs
-	int ch;
-	while ((ch = getchar()) != '\n' && ch != EOF);
-}
-
 int main()
 {
 	int c = 0;
@@ -71,21 +63,20 @@ int main()
 	int hold_value;
 
 
-	printf("The most basic version, only input two digits followed by operators... danke des!!!\n\n");
+	printf("-- The version1.1 of Jack's RPC -- \nHandling only one calculation at a time, but NOW with multi-digit numbers!!\nInput the numbers and operator with a space in between... danke des :)\n\n");
 	while ((c = getchar()) != EOF) {
-		printf("in while\n");
 		if (c >= '0' <= '9') {
-
-			printf("%d - digit_count\n", digit_count);
-			printf("%d - digit_index\n", digit_index);
 			if (digit_count > 0) {
-				hold_value = digit[digit_index];
-				printf("%d - digit[digit_index]\n", digit[digit_index]);
-				digit[digit_index] = (pow(10, digit_count) * (c - '0'));
-				digit[digit_index] += hold_value;
-				digit_count++;
-				printf("%d - digit\n", digit[digit_index]);
-
+				if (c == ' ' || c == '\t') {
+					digit_count = 0;
+					digit_index++;
+				}
+				else {
+					hold_value = digit[digit_index];
+					hold_value *= 10;
+					digit[digit_index] = (c - '0') + hold_value;
+					digit_count++;
+				}
 			}
 			else {
 				digit[digit_index] = c - '0';
@@ -97,12 +88,6 @@ int main()
 			operator[operator_index++] = c;
 			digit_count = 0;
 			digit_index++;
-			printf("operator\n");
-		}
-		if (c == ' ' || c == '\t') {
-			digit_count = 0;
-			digit_index++;
-			printf("' '\n");
 		}
 		if (c == '\n') {
 			break;
