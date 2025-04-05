@@ -1,23 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
+
 
 #define MAX 100			// max number of places
 
 int rpc(int digit[], char operator[], int count)
 {
 	int  o = 0;	//indexing for digits & Operators
-	int digit1, digit2, operator_sign;
+	int digit1, digit2;
+	char operator_sign;
 	int sum = 0;
 	int a = 0;
 
 
 		digit1 = digit[0];
 		digit2 = digit[1];
-		operator_sign = operator[1];
+		operator_sign = operator[0];
 		printf("%d - digit1\n", digit1);
 		printf("%d - digit2\n", digit2);
-		printf("%c - operator\n", operator);
+		printf("%c - operator\n", operator_sign);
 		switch (operator_sign) {
 			case '+':
 				sum = digit1 + digit2;
@@ -39,9 +42,21 @@ int rpc(int digit[], char operator[], int count)
 	
 }
 
+int power(int base, int n)
+{
+	int i, p;
 
+	p = 1;
+	for (i = 1; i <= n; i++) {
+		p = p * base;
+	}
+	return p;
+}
 
-
+void clear_input_buffer() {						//clearing buffered inputs
+	int ch;
+	while ((ch = getchar()) != '\n' && ch != EOF);
+}
 
 int main()
 {
@@ -53,36 +68,41 @@ int main()
 	int digit_count = 0;
 	int sum = 0;
 	int options = 0;
+	int hold_value;
 
 
 	printf("The most basic version, only input two digits followed by operators... danke des!!!\n\n");
 	while ((c = getchar()) != EOF) {
 		printf("in while\n");
 		if (c >= '0' <= '9') {
-			if (digit_count > 0)
-				digit[digit_index] = digit[digit_index] + (c - '0');
-			else
+			printf("%d - digit_count\n", digit_count);
+			printf("%d - digit_index\n", digit_index);
+			if (digit_count > 0) {
+				hold_value = digit[digit_index];
+				printf("%d - digit[digit_index]\n", digit[digit_index]);
+				digit[digit_index] = (pow(10, digit_count) * (c - '0'));
+				digit[digit_index] += hold_value;
+				digit_count++;
+				printf("%d - digit\n", digit[digit_index]);
+
+			}
+			else {
 				digit[digit_index] = c - '0';
 				digit_count++;
+
+			}
 		}
 		if (c == '+' || c == '-' || c == '/' || c == '*') {
 			operator[operator_index++] = c;
 			digit_count = 0;
 			digit_index++;
+			printf("operator\n");
 		}
-		if (c == ' ' || c == '\t') {
-			digit_count = 0;
-			digit_index++;
-		}
+
 		if (c == '\n') {
-			puts(digit);
-			digit_count = 0;
-			digit_index = 0;
 			break;
 		}
-		sum = rpc(digit, operator, digit_count);
-		printf("%d", sum);
-
-
 	}
+	sum = rpc(digit, operator, digit_count);
+	printf("%d", sum);
 }
