@@ -75,6 +75,7 @@ int main()
 	while ((c = getchar()) != EOF) {
 		printf("in while\n");
 		if (c >= '0' <= '9') {
+
 			printf("%d - digit_count\n", digit_count);
 			printf("%d - digit_index\n", digit_index);
 			if (digit_count > 0) {
@@ -98,7 +99,11 @@ int main()
 			digit_index++;
 			printf("operator\n");
 		}
-
+		if (c == ' ' || c == '\t') {
+			digit_count = 0;
+			digit_index++;
+			printf("' '\n");
+		}
 		if (c == '\n') {
 			break;
 		}
